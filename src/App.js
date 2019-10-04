@@ -1,24 +1,23 @@
 import React from 'react';
 import ViewPage from './components/ViewPage/ViewPage';
+import CreateHouse from './components/CreateHouse/CreateHouse';
+import ItemList from './components/ItemList/ItemList';
+import DeleteHouse from './components/DeleteHouse/DeleteHouse';
+import Details from './components/Details/Details';
 import './App.css';
 
-import {requestHouses, deleteHouse, createHouse} from 'actions.js';
+import {requestHouses} from './actions';
 import { connect } from 'react-redux';
-
 const mapStateToProps = state => {
   return {
-    deleteHouse : state.deleteHouse.houserm,
-    createHouse : state.createHouse.housecr,
-    robots : state.requestRobots.robots,
-    isPending : state.requestRobots.isPending,
-    error : state.requestRobots.error
+    houses : state.houses,
+    isPending : state.isPending,
+    error : state.error
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    letCreateHouse : (event) => dispatch( createHouse(event.target.value) ),
-    letDeleteHouse : (event) => dispatch( deleteHouse(event.target.value) ),
     onRequestHouses : () => dispatch( requestHouses() )
   }
 }
@@ -31,6 +30,10 @@ class App extends React.Component {
     }
   }
 
+  componentDidMount(){
+    this.props.onRequestHouses();
+  }
+
   onRouteChange = (route, id) => {
     if( route === 'home'){
       this.setState({route})
@@ -38,7 +41,14 @@ class App extends React.Component {
       this.setState({route})
     }else if( route === 'item'){
       this.setState({route})
+    }else if( route === 'create'){
+      this.setState({route})
+    }else if( route === 'delete'){
+      this.setState({route})
+    }else if( route === 'details' + this.state.selectedAdress){
+      this.setState({route: 'details' + this.state.selectedAdress})
     }
+
   }
 
   render (){
@@ -46,15 +56,23 @@ class App extends React.Component {
       <div className="App">
         { this.state.route === 'home'
           ?
-            <ViewPage />
+            <ViewPage onRouteChange={this.onRouteChange}/>
           :
           this.state.route === 'itemlist'
           ?
-            <ItemList />
+            <ItemList houses={this.props.houses} onRouteChange={this.onRouteChange}/>
+          :
+          this.state.route === 'create'
+          ?
+            <CreateHouse onRouteChange={this.onRouteChange}/>
+          :
+          this.state.route === 'delete'
+          ?
+            <DeleteHouse />
           :
           this.state.route === 'details'
           ?
-            <Details />
+            <Details onRouteChange={this.onRouteChange}/>
           :
             <h1>Something went wrong(</h1>
         }
