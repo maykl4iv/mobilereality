@@ -9,8 +9,8 @@ class Item extends React.Component{
           <h2>{this.props.adress}</h2>
           <p>{this.props.owner}</p>
         </div>
-        <DeleteHouse adress={this.props.adress}/>
-        <button onClick={()=>this.props.onRouteChange('details', this.props.adress)}></button>
+        <DeleteHouse id={this.props.id} />
+        <button onClick={()=>this.props.onRouteChange('details', this.props.idNumber)}>Details</button>
       </div>
     );
   }

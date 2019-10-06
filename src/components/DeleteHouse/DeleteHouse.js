@@ -1,19 +1,15 @@
 import React from 'react';
 
 class DeleteHouse extends React.Component{
+
   onSubmitDeleting = () => {
-      fetch('http://mr-test-backend.sadek.usermd.net/swagger/#/houses/post_houses', {
-        method: 'delete',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          adress: this.props.adress
-        })
+      fetch(`http://mr-test-backend.sadek.usermd.net/houses/${this.props.id}`, {
+        method: 'delete'
       })
         .then( resp => resp.json())
-        .then( house => console.log(house))
-        .catch(error => console.log(error))
-    }
-
+        .then( resp => alert('Deleted. Please Update!'))
+        .catch(error => alert('Oops, some error('))
+  }
 
   render(){
     return(

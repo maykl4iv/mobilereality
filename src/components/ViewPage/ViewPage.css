@@ -14,8 +14,23 @@
 
 }
 .upR{
-  width: 50%;
+  display: inline-flex;
+  flex-direction: column;
+  height: 50%;
 }
+.upR img {
+  max-height: 150px;
+}
+.quaterUp{
+  display: inline-flex;
+  flex-direction: row;
+}
+
+.quaterDw{
+  display: inline-flex;
+  flex-direction: row;
+}
+
 .upL{
     width: 50%;
     display: flex;
@@ -33,5 +48,6 @@ img{
   justify-content: center;
 }
 .dwL{
-  width: 50%;
+  width: 48%;
+  margin: 0;
 }

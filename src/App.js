@@ -26,11 +26,17 @@ class App extends React.Component {
   constructor(){
     super();
     this.state = {
-      route: 'home'
+      route: 'home',
+      selectedId: '',
+      selectedHouse: []
     }
   }
 
   componentDidMount(){
+    this.props.onRequestHouses();
+  }
+
+  updateHousesRequest = () => {
     this.props.onRequestHouses();
   }
 
@@ -44,9 +50,9 @@ class App extends React.Component {
     }else if( route === 'create'){
       this.setState({route})
     }else if( route === 'delete'){
-      this.setState({route})
-    }else if( route === 'details' + this.state.selectedAdress){
-      this.setState({route: 'details' + this.state.selectedAdress})
+      this.props.onRequestHouses();
+    }else if( route === 'details'){
+      this.setState({route: 'details' + id, selectedId: id, selectedHouse: this.props.houses[id]})
     }
 
   }
@@ -60,19 +66,24 @@ class App extends React.Component {
           :
           this.state.route === 'itemlist'
           ?
-            <ItemList houses={this.props.houses} onRouteChange={this.onRouteChange}/>
+            <ItemList
+              houses={this.props.houses}
+              onRouteChange={this.onRouteChange}
+              onRequestHouses={this.props.onRequestHouses}
+              updateHousesRequest={this.updateHousesRequest}
+            />
           :
           this.state.route === 'create'
           ?
             <CreateHouse onRouteChange={this.onRouteChange}/>
           :
-          this.state.route === 'delete'
+          this.state.route === 'details' + this.state.selectedId
           ?
-            <DeleteHouse />
-          :
-          this.state.route === 'details'
-          ?
-            <Details onRouteChange={this.onRouteChange}/>
+            <Details
+              id={this.state.selectedId}
+              onRouteChange={this.onRouteChange}
+              house={this.state.selectedHouse}
+            />
           :
             <h1>Something went wrong(</h1>
         }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 class CreateHouse extends React.Component{
   constructor(props){
@@ -7,12 +7,12 @@ class CreateHouse extends React.Component{
       address: "",
       owner: "",
       price: "",
-      area: ""
+      area: -1
     }
   }
 
-  onAdressChange = (event) => {
-    this.setState({ adress: event.target.value });
+  onAddressChange = (event) => {
+    this.setState({ address: event.target.value });
   }
 
   onOwnerChange = (event) => {
@@ -28,22 +28,28 @@ class CreateHouse extends React.Component{
   }
 
   onSubmitCreating = () => {
-      fetch('http://mr-test-backend.sadek.usermd.net/swagger/#/houses/post_houses', {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          adress: this.state.adress,
-          owner: this.state.owner,
-          price: this.state.price,
-          area: this.state.area
-        })
-      })
-        .then( resp => resp.json())
+    const data = {
+      address : this.state.address,
+      owner : this.state.owner,
+      price : this.state.price,
+      area : this.state.area
+    };
+    const url = "http://mr-test-backend.sadek.usermd.net/houses";
+    const init = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify(data)
+    };
+
+      fetch( url, init)
+        .then( resp => resp.text())
         .then( house => {
-          console.log(house);
-          this.props.onRouteChange('itemlist')
+          console.log(house)
+          this.props.onRouteChange("itemlist")
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log(error.text()))
     }
 
   render(){
@@ -54,13 +60,13 @@ class CreateHouse extends React.Component{
         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
           <legend className="f1 fw6 ph0 mh0">Create house</legend>
           <div className="mt3">
-            <label className="db fw6 lh-copy f6" htmlFor="name">Adress</label>
+            <label className="db fw6 lh-copy f6" htmlFor="name">Address</label>
             <input
             className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
             type="text"
             name="adress"
             id="adress"
-            onChange={this.onAdressChange}
+            onChange={this.onAddressChange}
             required
             />
           </div>
@@ -76,10 +82,10 @@ class CreateHouse extends React.Component{
             />
           </div>
           <div className="mv3">
-            <label className="db fw6 lh-copy f6" htmlFor="password">Price</label>
+            <label className="db fw6 lh-copy f6" htmlFor="price">Price</label>
             <input
             className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-            type="price"
+            type="text"
             name="price"
             id="price"
             onChange={this.onPriceChange}
@@ -87,10 +93,10 @@ class CreateHouse extends React.Component{
             />
           </div>
           <div className="mv3">
-            <label className="db fw6 lh-copy f6" htmlFor="password">Area</label>
+            <label className="db fw6 lh-copy f6" htmlFor="area">Area</label>
             <input
             className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-            type="area"
+            type="number"
             name="area"
             id="area"
             onChange={this.onAreaChange}
